@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import Integer, func
 from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncAttrs, async_sessionmaker
-from config import settings
+from .config import settings
 
 
 DATABASE_URL = settings.get_db_url()
