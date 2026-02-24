@@ -1,36 +1,25 @@
-import asyncio
+from datetime import datetime
 
-from sqlalchemy import Column
-from sqlalchemy import MetaData
-from sqlalchemy import select
-from sqlalchemy import String
-from sqlalchemy import Table
-from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy import Integer, func
+from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncAttrs, async_sessionmaker
+from config import settings
 
 
-meta = MetaData()
-t1 = Table("t1", meta, Column("name", String(50), primary_key=True))
+DATABASE_URL = settings.get_db_url()
 
-async def async_main() -> None:
-    engine = create_async_engine("sqlite+aiosqlite:///data/db.sqlite3")
+engine = create_async_engine(url=DATABASE_URL)
 
-    async with engine.begin() as conn:
-        await conn.run_sync(meta.drop_all)
-        await conn.run_sync(meta.create_all)
+async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
-        await conn.execute(
-            t1.insert(), [{"name": "some name 1"}, {"name": "some name 2"}]
-        )
 
-    async with engine.connect() as conn:
-         # select a Result, which will be delivered with buffered
-         # results
-        result = await conn.execute(select(t1).where(t1.c.name == "some name 2"))
+class Base(AsyncAttrs, DeclarativeBase):
+    __abstract__ = True
 
-        print(result.fetchall())
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
 
-     # for AsyncEngine created in function scope, close and
-     # clean-up pooled connections
-    await engine.dispose()
-
-asyncio.run(async_main())
+    @declared_attr.directive
+    def __tablename__(cls) -> str:
+        return cls.__name__.lower() + "s"
