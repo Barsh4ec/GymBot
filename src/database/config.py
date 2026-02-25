@@ -11,7 +11,8 @@ class Settings(BaseSettings):
     DB_NAME: str
     
     model_config = SettingsConfigDict(
-        env_file=os.path.join(os.getcwd(), ".env")
+        env_file=os.path.join(os.getcwd(), ".env"),
+        extra="ignore"
     )
 
     def get_db_url(self):
