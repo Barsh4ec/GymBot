@@ -6,7 +6,6 @@ from .models import WeightType, MachineCategory
 
 class UserPydantic(BaseModel):
     id: int
-    user_id: int
     chat_id: int
 
     model_config = ConfigDict(from_attributes=True)

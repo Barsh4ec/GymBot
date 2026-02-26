@@ -1,6 +1,6 @@
 import enum
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .engine import Base
 
@@ -18,7 +18,7 @@ class MachineCategory(str, enum.Enum):
 
 
 class User(Base):
-    user_id: Mapped[int] = mapped_column(unique=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
     chat_id: Mapped[int] = mapped_column(unique=True)
 
     machines: Mapped[list["Machine"]] = relationship(
@@ -34,6 +34,7 @@ class User(Base):
 
 
 class Machine(Base):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str]
     category: Mapped[MachineCategory]
     weight_type: Mapped[WeightType]
@@ -53,6 +54,7 @@ class Machine(Base):
 
 
 class Set(Base):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     machine_id: Mapped[int] = mapped_column(ForeignKey("machines.id"))
 
@@ -73,6 +75,7 @@ class Set(Base):
 
 
 class Rep(Base):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     set_id: Mapped[int] = mapped_column(ForeignKey("sets.id"))
     rep_number: Mapped[int]
     weight: Mapped[float]
