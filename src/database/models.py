@@ -43,7 +43,8 @@ class Machine(Base):
 
     user: Mapped["User"] = relationship(
         "User",
-        back_populates="machines"
+        back_populates="machines",
+        lazy="joined"
     )
 
     sets: Mapped[list["Set"]] = relationship(

@@ -28,6 +28,13 @@ class UserDAO(BaseDAO):
 class MachineDAO(BaseDAO):
     model = Machine
 
+    @classmethod
+    async def get_machines_for_user(cls, user_id: int, session: AsyncSession) -> list:
+        query = select(cls.model).where(cls.model.user_id == user_id)
+        result = await session.execute(query)
+        records = result.scalars().all()
+        return records
+
 
 class SetDAO(BaseDAO):
     model = Set
