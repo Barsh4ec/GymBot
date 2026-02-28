@@ -1,12 +1,12 @@
 from asyncio import run
 
-from handlers.base import main
+from handlers.bot_base import main
 
 
 #########
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from database.requests import create_user, get_all_users, check_if_user_exist, delete_user_by_id, create_machine, get_all_machines_for_user
+from database.requests import create_user, get_all_users, check_if_user_exist, delete_user_by_id, create_machine, get_all_machines_for_user, delete_machine_by_id
 from database.schemas import UserPydantic, MachinePydantic
 
 

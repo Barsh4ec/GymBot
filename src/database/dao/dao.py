@@ -9,7 +9,7 @@ class UserDAO(BaseDAO):
     model = User
     
     @classmethod
-    async def get_user(cls, id: int, session: AsyncSession) -> bool:
+    async def get_user(cls, id: int, session: AsyncSession) -> Machine | None:
         """
         Get user by id
 
@@ -22,7 +22,6 @@ class UserDAO(BaseDAO):
         query = select(cls.model).where(cls.model.id == id)
         result = await session.execute(query)
         return result.scalar_one_or_none()
-
 
 
 class MachineDAO(BaseDAO):

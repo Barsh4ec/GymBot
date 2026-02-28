@@ -1,4 +1,4 @@
-from aiogram.types import KeyboardButton
+from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 
@@ -28,7 +28,7 @@ def main_kb(user_id: int) -> ReplyKeyboardBuilder:
     )
 
 
-def machine_kb(user_id: int, machines: list) -> ReplyKeyboardBuilder:
+def machine_kb(user_id: int, machines: list) -> ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
     
     for machine in machines:
@@ -37,7 +37,7 @@ def machine_kb(user_id: int, machines: list) -> ReplyKeyboardBuilder:
         )
 
     builder.row(
-        KeyboardButton(text="➕")
+        KeyboardButton(text="➕ Додати вправу/тренажер")
     )
 
     return builder.as_markup(

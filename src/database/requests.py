@@ -102,3 +102,11 @@ async def get_all_machines_for_user(user_id: int, session: AsyncSession) -> list
         machine_pydantic = MachinePydantic.model_validate(machine)
         list_machines.append(machine_pydantic.model_dump())
     return list_machines
+
+
+@connection
+async def delete_machine_by_id(id: int, session: AsyncSession) -> None:
+    machine = await MachineDAO.get_one_by_id(id=id, session=session)
+
+    await session.delete(machine)
+    await session.commit()

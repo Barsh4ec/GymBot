@@ -2,6 +2,7 @@ import logging
 
 from aiogram import Bot, Dispatcher, types
 from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.fsm.storage.
 from aiogram.types import BotCommand, BotCommandScopeDefault
 
 from .bot_config import settings

@@ -18,6 +18,12 @@ class BaseDAO:
         return new_instance
     
     @classmethod
+    async def get_one_by_id(cls, session: AsyncSession, id: int):
+        query = select(cls.model).where(cls.model.id == id)
+        result = await session.execute(query)
+        return result.scalar_one_or_none()
+    
+    @classmethod
     async def getall(cls, session: AsyncSession):
         query = select(cls.model)
         result = await session.execute(query)
