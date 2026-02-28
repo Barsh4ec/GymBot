@@ -1,5 +1,7 @@
-from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
+from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
+
+from database.models import MachineCategory
 
 
 def main_kb(user_id: int) -> ReplyKeyboardBuilder:
@@ -33,7 +35,7 @@ def machine_kb(user_id: int, machines: list) -> ReplyKeyboardMarkup:
     
     for machine in machines:
         builder.row(
-            KeyboardButton(text=f"{machine['name']}")
+            KeyboardButton(text=machine["name"])
         )
 
     builder.row(
@@ -43,4 +45,21 @@ def machine_kb(user_id: int, machines: list) -> ReplyKeyboardMarkup:
     return builder.as_markup(
         resize_keyboard=True,
         one_time_keyboard=True,
+    )
+
+
+def machine_categories_kb() -> ReplyKeyboardMarkup:
+    builder = ReplyKeyboardBuilder()
+
+    categories = [category.value for category in MachineCategory]
+
+    for category in categories:
+        builder.row(
+            KeyboardButton(text=category)
+        )
+    builder.adjust(2, 2)
+
+    return builder.as_markup(
+        resize_keyboard=True,
+        one_time_keyboard=True
     )
