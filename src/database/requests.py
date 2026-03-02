@@ -96,6 +96,14 @@ async def create_machine(
 
 @connection
 async def get_all_machines_for_user(user_id: int, session: AsyncSession) -> list:
+    """
+    Returns a list of machines for user with specified id
+    Input:
+     - user_id: int - id of the user who is creating machine
+
+    Output:
+     - result: list[dict] - list of dictionaries with machines data
+    """
     machines = await MachineDAO.get_machines_for_user(user_id=user_id, session=session)
     list_machines = []
     for machine in machines:
@@ -106,6 +114,11 @@ async def get_all_machines_for_user(user_id: int, session: AsyncSession) -> list
 
 @connection
 async def delete_machine_by_id(id: int, session: AsyncSession) -> None:
+    """
+    Delete machine by id
+    Input:
+     - id: int - id of machine
+    """
     machine = await MachineDAO.get_one_by_id(id=id, session=session)
 
     await session.delete(machine)

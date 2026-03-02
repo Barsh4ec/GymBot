@@ -1,7 +1,13 @@
-from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from aiogram.types import (
+    KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
+)
+from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 
-from database.models import MachineCategory
+from database.models import MachineCategory, WeightType
+
+
+def remove_kb():
+    return ReplyKeyboardRemove()
 
 
 def main_kb(user_id: int) -> ReplyKeyboardBuilder:
@@ -45,6 +51,7 @@ def machine_kb(user_id: int, machines: list) -> ReplyKeyboardMarkup:
     return builder.as_markup(
         resize_keyboard=True,
         one_time_keyboard=True,
+        input_field_placeholder="Використайте меню"
     )
 
 
@@ -61,5 +68,45 @@ def machine_categories_kb() -> ReplyKeyboardMarkup:
 
     return builder.as_markup(
         resize_keyboard=True,
-        one_time_keyboard=True
+        one_time_keyboard=True,
+        input_field_placeholder="Виберіть категорію"
     )
+
+
+def machine_weight_type_kb() -> ReplyKeyboardMarkup:
+    builder = ReplyKeyboardBuilder()
+
+    weight_types = [w_type.value for w_type in WeightType]
+
+    for w_type in weight_types:
+        builder.row(
+            KeyboardButton(text=w_type)
+        )
+    builder.adjust(2)
+
+    return builder.as_markup(
+        resize_keyboard=True,
+        one_time_keyboard=True,
+        input_field_placeholder="Виберіть тип"
+    )
+
+
+def without_photo_option_kb() -> ReplyKeyboardMarkup:
+    builder = ReplyKeyboardBuilder()
+    builder.row(
+        KeyboardButton(text="Без фото")
+    )
+    return builder.as_markup(
+        resize_keyboard=True,
+        one_time_keyboard=True,
+        input_field_placeholder='Надішліть фото або виберіть опцію "Без фото" в меню'
+    )
+
+
+def check_machine_data_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.row(
+        InlineKeyboardButton(text="✅Все правильно", callback_data="correct"),
+        InlineKeyboardButton(text="❌Неправильно", callback_data="incorrect")
+    )
+    return builder.as_markup()

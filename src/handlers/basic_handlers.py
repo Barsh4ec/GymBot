@@ -2,6 +2,7 @@ import logging
 
 from aiogram import Router, types
 from aiogram.filters.command import Command
+from aiogram.fsm.context import FSMContext
 
 from database.requests import check_if_user_exist, create_user
 from keyboards.all_keyboards import main_kb
@@ -10,7 +11,8 @@ from keyboards.all_keyboards import main_kb
 router = Router()
 
 @router.message(Command("start"))
-async def cmd_start(message: types.Message):
+async def cmd_start(message: types.Message, state: FSMContext):
+    await state.clear()
     user_id = message.from_user.id
     chat_id = message.chat.id
     exist = await check_if_user_exist(user_id)
